@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org" 
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+	layout:decorator="layout">
+<head>
+<link rel="stylesheet" th:href="@{/assets/bootstrap/css/bootstrap.min.css}" />
+<link rel="stylesheet" th:href="@{/assets/font-awesome-4.5.0/css/font-awesome.min.css}" />
+<link rel="stylesheet" th:href="@{/assets/css/styles.css}" />
+<title>Carriers</title>
+</head>
+<body>
+
+
+
+<div layout:fragment="content">
+	<br>
+	<h3 class="centrirano">Carriers</h3>
+	
+	<div sec:authorize="hasRole('ADMIN')">
+			<h5>You will see this only if you are ADMIN</h5>
+	</div>
+	
+<div class="row">	
+	
+
+<div class="col-md-5" sec:authorize="hasRole('ADMIN')">
+	<br>
+	<h3 class="centrirano">Add new Carrier:</h3>
+	<br>
+	<div class="centrirano">
+
+	<form th:action="@{/admin/addcarrier}" method="get">
+    <button class="btn btn-warning btn-lg" type="Submit">+ Add New</button>
+	</form>
+
+	</div>
+</div>		
+	
+</div>   
+
+<br>
+		 
+<div class="col-12">
+<table class="table table-bordered table-striped">
+				<thead class="thead-dark">
+					<tr>
+						<th>ID</th>
+						<th>Name</th>
+						<th>Address</th>
+						<th>Pib</th>
+						<th sec:authorize="hasRole('ADMIN')">Update</th>
+						<th sec:authorize="hasRole('ADMIN')">Delete</th>
+					</tr>
+				</thead>
+				<tbody class="redovi">
+					<tr th:each ="carrier : ${carriers}">
+						<td th:utext="${carrier.id}"></td>
+						<td th:utext="${carrier.name}"></td>
+						<td th:utext="${carrier.address}"></td>
+						<td th:utext="${carrier.pib}"></td>
+
+<td sec:authorize="hasRole('ADMIN')"> <a th:href="@{/admin/editcarrier/{id}(id=${carrier.id})}" class="btn btn-success btn-sm" role="button">Update</a> </td>
+<td sec:authorize="hasRole('ADMIN')"> <a th:href="@{/admin/deletecarrier/{id}(id=${carrier.id})}" class="btn btn-danger btn-sm" role="button">Delete</a> </td>
+					</tr>
+				</tbody>
+</table>
+			
+		
+</div>
+		
+<br/>			
+	</div>   
+
+
+
+	<script th:src="@{'/assets/js/jquery-2.1.4.min.js'}"></script>
+	<script th:src="@{'/assets/bootstrap/js/bootstrap.min.js'}"></script>
+</body>
+</html>

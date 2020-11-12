@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<link rel="stylesheet" th:href="@{/assets/css/styles.css}" />
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<title>Add Line</title>
+</head>
+<body>
+
+
+<div class="container">	
+<br/>
+<form th:action="@{/lines}" method="get">
+    <button class="btn btn-lg btn-primary btn-block" type="Submit">GO BACK</button>
+</form>
+
+	<div class="row">
+		<div class="col-md-6 col-md-offset-3">
+			<h1>Add Line</h1>
+<form autocomplete="off" action="#" th:action="@{/admin/addline}"  th:object="${line}" method="post" class="form-horizontal"  role="form">
+							
+		 <div class="form-group">
+            <div class="col-sm-9">
+               <label th:if="${#fields.hasErrors('destination')}" th:errors="*{destination}" class="validation-message">Destination</label>
+               <input type="text" th:field="*{destination}" placeholder="Destination" class="form-control"/>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <div class="col-sm-9">
+               <label th:if="${#fields.hasErrors('numberOfSeats')}" th:errors="*{numberOfSeats}" class="validation-message">Number Of Seats</label>
+               <input type="number" th:field="*{numberOfSeats}" placeholder="Number Of Seats" class="form-control"/>
+            </div>
+          </div>
+                   
+          <div class="form-group">
+            <div class="col-sm-9">
+               <label th:if="${#fields.hasErrors('ticketPrice')}" th:errors="*{ticketPrice}" class="validation-message">Ticket Price</label>
+               <input type="number" th:field="*{ticketPrice}" placeholder="Ticket Price" class="form-control"/>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <div class="col-sm-9">
+               <label th:if="${#fields.hasErrors('departureTime')}" th:errors="*{departureTime}" class="validation-message">Departure Time</label>
+               <input type="text" th:field="*{departureTime}" placeholder="Departure Time" class="form-control"/>
+            </div>
+          </div>
+                  
+          <div class="form-group">
+           <div class="col-sm-9">
+           <div class="zaSelect">
+           		<label>Carrier: </label>
+           		<select th:field="*{carrier.id}">
+           		<option value=""> -- </option>
+    			 <option th:each="carrier: ${carriers}"
+             			th:value="${carrier.id}"
+             			th:text="${carrier.name}"/>
+				</select>
+			</div>
+ 			</div>
+ 		</div>
+				
+		  <div class="form-group">
+             <div class="col-sm-9">
+                 <button type="submit" class="btn btn-primary btn-block">Add</button>
+              </div>
+           </div>
+        <h2><span class="text-success" th:utext="${successMessage}"></span></h2>   
+</form>
+</div>
+</div>
+	
+	
+	
+
+</div>
+
+
+
+	<script th:src="@{'/assets/js/jquery-2.1.4.min.js'}"></script>
+	<script th:src="@{'/assets/bootstrap/js/bootstrap.min.js'}"></script>
+</body>
+</html>

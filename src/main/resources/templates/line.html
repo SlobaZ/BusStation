@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org" 
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+	layout:decorator="layout">
+<head>
+<link rel="stylesheet" th:href="@{/assets/bootstrap/css/bootstrap.min.css}" />
+<link rel="stylesheet" th:href="@{/assets/font-awesome-4.5.0/css/font-awesome.min.css}" />
+<link rel="stylesheet" th:href="@{/assets/css/styles.css}" />
+<title>Lines</title>
+</head>
+<body>
+
+
+
+<div layout:fragment="content">
+	<h3 class="centrirano">Lines</h3>
+	
+	<div sec:authorize="hasRole('ADMIN')">
+			<h5>You will see this only if you are ADMIN</h5>
+	</div>
+	
+	<div class="row">	
+	
+	<div class="col-md-7">
+		<h4>Search line:</h4>
+		
+ <form th:object="${lines}" th:action="@{/lines}" method="get">
+    <div class="form-group">
+        <input type="text" name="destination" id="destination" th:value="${destination}" placeholder="Destination"/>
+    </div>
+
+    <div class="form-group">
+        <input type="text" name="carrierName" id="carrierName" th:value="${carrierName}" placeholder="Carrier Name"/> 
+    </div>
+    
+    <div class="form-group">
+        <input type="number" name="ticketPrice" id="ticketPrice" th:value="${ticketPrice}" placeholder="Ticket Price"/>
+    </div>
+    <div class="form-group">    
+        <input type="submit" value="Search"/>  
+    </div>      	
+</form>
+</div>
+
+<div class="col-md-5" sec:authorize="hasRole('ADMIN')">
+	<br/>
+	<h3 class="centrirano">Add new line:</h3>
+	<br/>
+	<div class="centrirano">
+
+	<form th:action="@{/admin/addline}" method="get">
+    <button class="btn btn-warning btn-lg" type="Submit">+ Add New</button>
+	</form>
+
+	</div>
+</div>		
+	
+</div>   
+		
+<div th:if="${not #lists.isEmpty(lines)}">   
+<div class="col-12">
+<table class="table table-bordered table-striped">
+				<thead class="thead-dark">
+					<tr>
+						<th>ID</th>
+						<th>Destination</th>
+						<th>Carrier</th>
+						<th>Departure Time</th>
+						<th>Ticket Price</th>
+						<th>Number Of Seats</th>
+						<th sec:authorize="hasRole('ADMIN')">Update</th>
+						<th sec:authorize="hasRole('ADMIN')">Delete</th>
+						<th sec:authorize="hasRole('USER')">Reserve</th>
+					</tr>
+				</thead>
+				<tbody class="redovi">
+					<tr th:each ="line : ${lines}">
+						<td th:utext="${line.id}"></td>
+						<td th:utext="${line.destination}"></td>
+						<td th:utext="${line.carrier.name}"></td>
+						<td th:utext="${line.departureTime}"></td>
+						<td th:utext="${line.ticketPrice}"></td>
+						<td th:utext="${line.numberOfSeats}"></td>
+
+<td sec:authorize="hasRole('ADMIN')"> <a th:href="@{/admin/editline/{id}(id=${line.id})}" class="btn btn-success btn-sm" role="button">Update</a> </td>
+<td sec:authorize="hasRole('ADMIN')"> <a th:href="@{/admin/deleteline/{id}(id=${line.id})}" class="btn btn-danger btn-sm" role="button">Delete</a> </td>
+<td sec:authorize="hasRole('USER')"> <a th:href="@{/user/reserve/{id}(id=${line.id})}" class="btn btn-danger btn-sm" role="button">Reserve</a> </td>
+					</tr>
+				</tbody>
+</table>
+			
+
+			
+<nav aria-label="Pagination" th:if="${lines.totalPages gt 0}">
+    <ul class="pagination justify-content-center font-weight-medium">
+        <li class="page-item" th:classappend="${lines.number eq 0} ? 'disabled'">
+            <a class="page-link svg-icon"
+               th:href="@{/lines?page={id}(id=${lines.number lt 2 ? 1 : lines.number})}"
+               aria-label="Previous"
+               title="Previous Page" rel="tooltip">
+                <span aria-hidden="true" data-feather="chevrons-left" width="20" height="20">&laquo;</span>
+            </a>
+        </li>
+        <li class="page-item" th:classappend="${i eq lines.number + 1} ? 'active'"
+            th:each="i : ${#numbers.sequence( lines.number + 1, lines.totalPages > 10 + lines.number ? lines.number + 10 : lines.totalPages, 1)}">
+            <a class="page-link" th:href="@{/lines?page={id}(id=${i})}" th:text="${i}"
+               th:title="${'Page '+ i}"
+               rel="tooltip"></a>
+        </li>
+        <li class="page-item disabled" th:if="${lines.number + 10 < lines.totalPages}">
+            <a class="page-link svg-icon" href="#">
+                <span data-feather="more-horizontal" width="20" height="20"></span>
+            </a>
+        </li>
+        <li class="page-item" th:classappend="${lines.number + 1 eq lines.totalPages} ? 'disabled'">
+            <a class="page-link svg-icon" th:href="@{/lines?page={id}(id=${lines.number + 2})}"
+               aria-label="Next"
+               title="Next Page" rel="tooltip">
+                <span aria-hidden="true" data-feather="chevrons-right" width="20" height="20">&raquo;</span>
+            </a>
+        </li>
+    </ul>
+</nav>
+			
+</div>
+</div>		
+<br/>			
+	</div>   
+
+
+
+	<script th:src="@{'/assets/js/jquery-2.1.4.min.js'}"></script>
+	<script th:src="@{'/assets/bootstrap/js/bootstrap.min.js'}"></script>
+</body>
+</html>

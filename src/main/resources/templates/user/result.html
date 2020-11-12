@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org" 
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+	layout:decorator="layout">
+<head>
+<link rel="stylesheet" th:href="@{/assets/bootstrap/css/bootstrap.min.css}" />
+<link rel="stylesheet" th:href="@{/assets/font-awesome-4.5.0/css/font-awesome.min.css}" />
+<link rel="stylesheet" th:href="@{/assets/css/styles.css}" />
+<title>Result Reservation</title>
+</head>
+<body>
+
+
+
+<div layout:fragment="content">
+
+
+<div class="row">		
+<div class="col-md-12">		
+<form>
+<h3 th:utext="${messageToTheUser}"></h3>
+<p>You have successfully made your reservation:</p>
+<h4 th:utext="${reservation.id}"></h4>		
+</form>	
+</div>
+
+
+<div class="col-md-12">	
+<table class="table table-bordered table-striped">
+				<thead class="thead-dark">
+					<tr>
+						<th>Destination</th>
+						<th>Departure Time</th>
+					</tr>
+				</thead>
+				<tbody class="redovi">
+					<tr>
+						<td th:utext="${reservation.line.destination}"></td>
+						<td th:utext="${reservation.line.departureTime}"> h</td>
+					</tr>
+					<tr style="border=1px solid black">
+						<td><h3>Ticket Price:</h3></td>
+						<td><h3 th:utext="${reservation.line.ticketPrice}"></h3></td>
+					</tr>
+				</tbody>
+</table>
+</div>
+
+</div>
+
+
+
+
+
+
+</div>
+
+
+
+	<script th:src="@{'/assets/js/jquery-2.1.4.min.js'}"></script>
+	<script th:src="@{'/assets/bootstrap/js/bootstrap.min.js'}"></script>
+</body>
+</html>
